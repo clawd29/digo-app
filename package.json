@@ -1,0 +1,17 @@
+{
+  "name": "digo-app",
+  "version": "1.0.0",
+  "main": "desktop/electron/main.js",
+  "scripts": {
+    "dev": "cd renderer && npm run dev",
+    "dev:electron": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^41.2.0"
+  },
+  "dependencies": {
+    "@ghostery/adblocker-electron": "^2.14.1",
+    "cross-fetch": "^4.1.0",
+    "ws": "^8.20.0"
+  }
+}
