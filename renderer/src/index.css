@@ -404,7 +404,7 @@ button:disabled {
 
 .player-hero {
   position: relative;
-  padding: 24px;
+  padding: 16px 18px;
   border-radius: 22px;
   overflow: hidden;
 
@@ -1155,3 +1155,206 @@ button:disabled {
   color: #8ea6b8;
 }
 
+
+
+/* ===============================
+   TOP GIFTERS PANEL
+   =============================== */
+
+.top-gifters-panel {
+  margin-top: 18px;
+}
+
+.top-gifters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.top-gifters-title {
+  margin: 0;
+  font-size: 20px;
+  color: #f4f8fc;
+}
+
+.top-gifters-badge {
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  color: #f8c76a;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.top-gifters-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.top-gifter-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 20, 28, 0.95),
+    rgba(7, 16, 24, 0.95)
+  );
+  border: 1px solid rgba(44, 68, 88, 0.85);
+  
+}
+
+.top-gifter-rank {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(245, 158, 11, 0.16);
+  color: #f8c76a;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.top-gifter-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.top-gifter-name {
+  color: #f4f8fc;
+  font-size: 14px;
+  font-weight: 900;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.top-gifter-meta {
+  color: #9cb4c7;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.top-gifter-total {
+  color: #f5c84c;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.top-gifters-empty {
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px dashed rgba(44, 68, 88, 0.8);
+  color: #9cb4c7;
+  text-align: center;
+}
+
+@media (max-width: 1200px) {
+  .top-gifters-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .top-gifters-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.top-gifter-first {
+  background: linear-gradient(
+    180deg,
+    rgba(245, 158, 11, 0.16),
+    rgba(10, 20, 28, 0.95)
+  );
+  border: 1.5px solid rgba(245, 158, 11, 0.9);
+  box-shadow:
+    0 0 20px rgba(245, 158, 11, 0.45),
+    inset 0 0 10px rgba(245, 158, 11, 0.15);
+}
+
+
+/* ===============================
+   TOP GIFTERS BIGO STYLE
+   =============================== */
+
+.top-gifter-avatar-wrap {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+}
+
+.top-gifter-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.26), transparent 35%),
+    linear-gradient(135deg, rgba(56, 189, 248, 0.9), rgba(245, 158, 11, 0.9));
+  border: 2px solid rgba(245, 200, 76, 0.9);
+  color: #071018;
+  font-size: 20px;
+  font-weight: 950;
+  box-shadow:
+    0 0 12px rgba(245, 158, 11, 0.25),
+    0 0 20px rgba(56, 189, 248, 0.16);
+}
+
+.top-gifter-crown {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  min-width: 30px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f9d56e, #b77710);
+  border: 1px solid rgba(255, 235, 160, 0.7);
+  color: #1b1204;
+  font-size: 11px;
+  font-weight: 950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.45);
+}
+
+.top-gifter-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.top-gifter-level {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0.24), rgba(245, 158, 11, 0.18));
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #c9eeff;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.top-gifter-total {
+  color: #f5c84c;
+  font-size: 20px;
+  font-weight: 950;
+  white-space: nowrap;
+}

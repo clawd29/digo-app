@@ -207,7 +207,9 @@
   width: 100%;
   align-items: stretch;
   text-align: left;
-  gap: 18px;
+  gap: 12px; /* 👈 antes 18px */
+  padding: 10px 0; /* 👈 nuevo */
+  min-height: 200px; /* 👈 clave */
 }
 
 .hero-player-layout {
