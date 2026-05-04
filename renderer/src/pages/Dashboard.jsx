@@ -13,19 +13,22 @@ import { getElectronApi } from "../utils/electronApi";
 function TopGiftersPanel({ giftFeed = [], events = [] }) {
   const giftsSource = giftFeed.length
     ? giftFeed
-    : events.filter((event) => event.type === "gift" || event.type === "gift_unmapped");
+    : events.filter(
+        (event) =>
+          event.type === "gift" || event.type === "gift_unmapped"
+      );
 
   const topGifters = Object.values(
     giftsSource.reduce((acc, gift) => {
       const user = gift.user || "Usuario";
       const coins = Number(
-          gift.total ||
+        gift.total ||
           gift.coins ||
           gift.amount ||
           gift.giftMeta?.coins ||
           gift.count ||
           0
-        );
+      );
 
       if (!acc[user]) {
         acc[user] = {
@@ -56,39 +59,34 @@ function TopGiftersPanel({ giftFeed = [], events = [] }) {
       </div>
 
       {topGifters.length === 0 ? (
-        <div className="top-gifters-empty">Aún no hay regalos registrados</div>
+        <div className="top-gifters-empty">
+          Aún no hay regalos registrados
+        </div>
       ) : (
         <div className="top-gifters-list">
-          {topGifters.map((gifter, index) => (
-            <div
-            className={`top-gifter-item ${index === 0 ? "top-gifter-first" : ""}`}
-            key={gifter.user}
-          >
-            <div className="top-gifter-avatar-wrap">
-              <div className="top-gifter-crown">
-                {index === 0 ? "👑" : `#${index + 1}`}
-              </div>
+  {topGifters.map((gifter, index) => (
+    <div
+      className={`top-gifter-row ${
+        index === 0 ? "top-gifter-first" : ""
+      }`}
+      key={gifter.user}
+    >
+      <div className="top-gifter-rank">
+        {index === 0 ? "👑" : `#${index + 1}`}
+      </div>
 
-              <div className="top-gifter-avatar">
-                {(gifter.user || "U").charAt(0).toUpperCase()}
-              </div>
-            </div>
+      <div className="top-gifter-name">{gifter.user}</div>
 
-            <div className="top-gifter-info">
-              <div className="top-gifter-name">{gifter.user}</div>
+      <div className="top-gifter-gifts">
+        {gifter.gifts} regalos
+      </div>
 
-              <div className="top-gifter-badges">
-                <span className="top-gifter-level">Lv {Math.min(99, gifter.gifts * 7)}</span>
-                <span className="top-gifter-meta">{gifter.gifts} regalos</span>
-              </div>
-            </div>
-
-            <div className="top-gifter-total">
-              🟡 {gifter.total}
-            </div>
-          </div>
-          ))}
-        </div>
+      <div className="top-gifter-total">
+        🟡 {gifter.total}
+      </div>
+    </div>
+  ))}
+</div>
       )}
     </section>
   );

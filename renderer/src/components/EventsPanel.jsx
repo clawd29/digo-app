@@ -26,6 +26,20 @@ function getEventBadgeClass(type) {
   }
 }
 
+function cleanChatText(event) {
+  let text = event.text || "";
+
+  text = text.replace(/^\[chat\]\s*/i, "");
+
+  const user = event.user || "";
+  if (user) {
+    const escapedUser = user.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    text = text.replace(new RegExp(`^${escapedUser}:\\s*`, "i"), "");
+  }
+
+  return text.trim();
+}
+
 function GiftItem({ item }) {
   const total = item.total || 0;
 
@@ -69,9 +83,7 @@ function EventsPanel({
   isChatOnly = false,
 }) {
   const shareCount = events.filter((event) => event.type === "share").length;
-  const fanCount = events.filter((event) => event.type === "fan").length;
-  const systemCount = events.filter((event) => event.type === "system").length;
-  const commandCount = events.filter((event) => event.type === "command").length;
+const fanCount = events.filter((event) => event.type === "fan").length;
 
   const groupedGifts = Object.values(
     giftFeed.reduce((acc, item) => {
@@ -127,52 +139,36 @@ const filteredEvents = filteredEventsRaw.filter((event, index, arr) => {
     <div className="card">
       <div className="section-head">
         <h3>{isChatOnly ? "Chat en vivo" : "Eventos"}</h3>
-        <span className="section-chip">Tiempo real</span>
+        
       </div>
 
       {!isChatOnly && (
-        <div className="event-filters">
-          <button
-            className={filter === "gift" ? "active" : ""}
-            onClick={() => onChangeFilter("gift")}
-          >
-            Gifts
-            <span className="filter-count">{giftCount}</span>
-          </button>
+  <div className="event-filters">
+    <button
+      className={filter === "gift" ? "active" : ""}
+      onClick={() => onChangeFilter("gift")}
+    >
+      Gifts
+      <span className="filter-count">{giftCount}</span>
+    </button>
 
-          <button
-            className={filter === "share" ? "active" : ""}
-            onClick={() => onChangeFilter("share")}
-          >
-            Shares
-            <span className="filter-count">{shareCount}</span>
-          </button>
+    <button
+      className={filter === "share" ? "active" : ""}
+      onClick={() => onChangeFilter("share")}
+    >
+      Shares
+      <span className="filter-count">{shareCount}</span>
+    </button>
 
-          <button
-            className={filter === "fan" ? "active" : ""}
-            onClick={() => onChangeFilter("fan")}
-          >
-            Fans
-            <span className="filter-count">{fanCount}</span>
-          </button>
-
-          <button
-            className={filter === "command" ? "active" : ""}
-            onClick={() => onChangeFilter("command")}
-          >
-            Commands
-            <span className="filter-count">{commandCount}</span>
-          </button>
-
-          <button
-            className={filter === "system" ? "active" : ""}
-            onClick={() => onChangeFilter("system")}
-          >
-            Sistema
-            <span className="filter-count">{systemCount}</span>
-          </button>
-        </div>
-      )}
+    <button
+      className={filter === "fan" ? "active" : ""}
+      onClick={() => onChangeFilter("fan")}
+    >
+      Fans
+      <span className="filter-count">{fanCount}</span>
+    </button>
+  </div>
+)}
 
       <div className="log">
         {isChatOnly ? (
@@ -198,7 +194,7 @@ const filteredEvents = filteredEventsRaw.filter((event, index, arr) => {
                   >
                     {event.user || "Usuario"}:
 </span>
-                  <span className="chat-text">{event.text}</span>
+                  <span className="chat-text">{cleanChatText(event)}</span>
                 </div>
               </div>
             ))
