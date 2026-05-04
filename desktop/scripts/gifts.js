@@ -227,62 +227,65 @@ console.log("[🎁 DigoPC Gifts CORE READY v6 JSON NAME BY ICON]");
   }
 
   async function cargarRegalos() {
-    cargarConfiguracion();
-    rebuildGiftCatalogIndexes();
+  cargarConfiguracion();
+  rebuildGiftCatalogIndexes();
 
-    try {
-      if (state.useCustomJson && state.customJsonText) {
-        if (isValidJsonObject(state.customJsonText)) {
-          state.giftMap = normalizarMapaRegalos(JSON.parse(state.customJsonText));
-          rebuildJsonMetaByIcon();
+  try {
+    const res = await fetch(state.defaultJsonPath);
+    const internalData = await res.json();
+    const internalGiftMap = normalizarMapaRegalos(internalData);
 
-          logDigo(`[GIFTS] JSON activo: custom (${Object.keys(state.giftMap).length} regalos)`);
+    let source = "internal";
+    let finalGiftMap = internalGiftMap;
 
-          emitirEvento({
-            type: "gifts_json_loaded",
-            source: "custom",
-            count: Object.keys(state.giftMap).length,
-            ts: now()
-          });
+    if (state.useCustomJson && state.customJsonText) {
+      if (isValidJsonObject(state.customJsonText)) {
+        const customGiftMap = normalizarMapaRegalos(
+          JSON.parse(state.customJsonText)
+        );
 
-          preloadAudios();
-          return true;
-        } else {
-          logDigo("[GIFTS] JSON custom inválido. Se ignora.");
-        }
+        finalGiftMap = {
+          ...internalGiftMap,
+          ...customGiftMap,
+        };
+
+        source = "internal+custom";
+      } else {
+        logDigo("[GIFTS] JSON custom inválido. Se ignora.");
       }
-
-      const res = await fetch(state.defaultJsonPath);
-      const data = await res.json();
-      state.giftMap = normalizarMapaRegalos(data);
-      rebuildJsonMetaByIcon();
-
-      logDigo(`[GIFTS] JSON activo: interno (${Object.keys(state.giftMap).length} regalos)`);
-
-      emitirEvento({
-        type: "gifts_json_loaded",
-        source: "internal",
-        count: Object.keys(state.giftMap).length,
-        ts: now()
-      });
-
-      preloadAudios();
-      return true;
-    } catch (e) {
-      state.giftMap = {};
-      state.jsonMetaByIcon = new Map();
-
-      logDigo(`[GIFTS] No se pudo cargar JSON: ${e.message}`);
-
-      emitirEvento({
-        type: "gifts_json_error",
-        message: e.message,
-        ts: now()
-      });
-
-      return false;
     }
+
+    state.giftMap = finalGiftMap;
+    rebuildJsonMetaByIcon();
+
+    logDigo(
+      `[GIFTS] JSON activo: ${source} (${Object.keys(state.giftMap).length} regalos)`
+    );
+
+    emitirEvento({
+      type: "gifts_json_loaded",
+      source,
+      count: Object.keys(state.giftMap).length,
+      ts: now(),
+    });
+
+    preloadAudios();
+    return true;
+  } catch (e) {
+    state.giftMap = {};
+    state.jsonMetaByIcon = new Map();
+
+    logDigo(`[GIFTS] No se pudo cargar JSON: ${e.message}`);
+
+    emitirEvento({
+      type: "gifts_json_error",
+      message: e.message,
+      ts: now(),
+    });
+
+    return false;
   }
+}
 
   function getAudio(url) {
     const safeUrl = text(url);

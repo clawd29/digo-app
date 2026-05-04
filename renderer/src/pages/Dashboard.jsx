@@ -293,18 +293,48 @@ function Dashboard() {
   }
 
   function addEvent(event) {
-    const normalized = {
-      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      type: event.type || "system",
-      text: event.text || "",
-      user: event.user || null,
-      timestamp: event.timestamp || Date.now(),
-      raw: event.raw || null,
-    };
+  const normalized = {
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    type: event.type || "system",
+    text: event.text || "",
+    user: event.user || null,
+    timestamp: event.timestamp || Date.now(),
+    raw: event.raw || null,
+  };
 
-    setEvents((prev) => [normalized, ...prev].slice(0, 200));
+  let shouldRunAction = true;
+
+  setEvents((prev) => {
+    if (normalized.type === "share" || normalized.type === "fan") {
+      const normalizedUser = String(normalized.user || "")
+        .trim()
+        .toLowerCase();
+
+      const isDuplicate = prev.some((item) => {
+        const itemUser = String(item.user || "")
+          .trim()
+          .toLowerCase();
+
+        return (
+          item.type === normalized.type &&
+          itemUser === normalizedUser &&
+          Math.abs((item.timestamp || 0) - (normalized.timestamp || 0)) < 8000
+        );
+      });
+
+      if (isDuplicate) {
+        shouldRunAction = false;
+        return prev;
+      }
+    }
+
+    return [normalized, ...prev].slice(0, 200);
+  });
+
+  if (shouldRunAction) {
     handleEventAction(normalized);
   }
+}
 
   function addSystemLine(text) {
     addEvent({
@@ -936,6 +966,7 @@ const handlePlayerStop = async () => {
                 }
               />
               Alertas de Fans
+              
             </label>
 
             <label className="checkbox-row">

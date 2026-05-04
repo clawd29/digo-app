@@ -455,7 +455,7 @@ button:disabled {
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr;
+  grid-template-columns: 1fr 1.15fr;
   gap: 18px;
   margin-top: 18px;
   align-items: start;
